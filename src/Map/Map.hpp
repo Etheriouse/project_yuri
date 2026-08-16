@@ -19,13 +19,13 @@ public:
     Map(unsigned int _width, unsigned int _height, Player *p, std::vector<Entity *> things, std::vector<Item *> thongs);
     ~Map();
 
-    Cell *get(unsigned int x, unsigned int y);
+    inline Cell *get(unsigned int x, unsigned int y);
 
     unsigned int width, height;
-    Player *p;
+    std::vector<Cell> map;
     std::vector<Entity *> things;
     std::vector<Item *> thongs;
-    std::vector<Cell> map;
+    Player *p;
 };
 
 #endif

@@ -9,6 +9,18 @@ public:
 
     }
 
+    void load(Serializer& s) override {
+        Life::load(s);
+    }
+
+    void save(Serializer& s) override {
+        Life::save(s);
+    }
+
+    void debug_print() override {
+        Life::debug_print();
+    }
+
 };
 
 #endif

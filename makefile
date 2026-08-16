@@ -1,35 +1,38 @@
 CXX := g++
 
-CXXFLAGS := -std=c++20 -g
-LDFLAGS :=
-LDLIBS := -lraylib -lopengl32 -lgdi32 -lwinmm
-
 SRC_DIR := src
 OBJ_DIR := bin
-TARGET := app.exe
+TARGET := app
 
-SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem -Path '$(SRC_DIR)' -Recurse -Filter '*.cpp' | ForEach-Object { $$_.FullName.Replace((Get-Location).Path + '\', '').Replace('\','/') }")
+CXXFLAGS := -std=c++20 -Wall -Wextra -I$(SRC_DIR)
+LDLIBS := -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+
+SOURCES := $(shell find $(SRC_DIR) -type f -name '*.cpp')
 OBJECTS := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SOURCES))
 
+.PHONY: all clean re list debug
 
 all: $(TARGET)
 
-
 $(TARGET): $(OBJECTS)
-	$(CXX) $(OBJECTS) -o $@ $(LDFLAGS) $(LDLIBS)
-
+	$(CXX) $(OBJECTS) -o $@ $(LDLIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	if not exist "$(dir $@)" mkdir "$(dir $@)"
-	$(CXX) $(CXXFLAGS) -c "$<" -o "$@"
-
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	if exist "$(OBJ_DIR)" rmdir /s /q "$(OBJ_DIR)"
-	if exist "$(TARGET)" del /q "$(TARGET)"
-
+	rm -rf $(OBJ_DIR) $(TARGET)
 
 re: clean all
 
+list:
+	@echo "Sources:"
+	@$(foreach src,$(SOURCES),echo "  $(src)";)
+	@echo ""
+	@echo "Objects:"
+	@$(foreach obj,$(OBJECTS),echo "  $(obj);)
 
-.PHONY: all clean re
+debug:
+	@echo "Sources = $(SOURCES)"
+	@echo "Objects = $(OBJECTS)"

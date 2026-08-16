@@ -5,19 +5,17 @@
 #include "GameWindow.hpp"
 #include "Map/Map.hpp"
 #include "Game/Player.hpp"
+#include "Serializer/Serializer.hpp"
 
 int main(int argc, char const *argv[])
 {
-
-    Window *_window = new Window();
-    Player *p = new Player("knight", 10, 5);
-    std::vector<Entity *> things;
-    std::vector<Item *> thongs;
-    Map *encounter = new Map(6, 6, p, things, thongs);
-
-    std::cout << p->hp << std::endl;
-
-    delete _window;
-    delete encounter;
+    std::string filename_save = "game.rrl";
+    // Serializer *s = new Serializer(filename_save, SAVE_MODE);
+   // Serializer *s = new Serializer(filename_save, LOAD_MODE);
+    Game *g = new Game();
+    // g->save(*s);
+    // g->load(*s);
+    g->debug_print();
+    // delete s;
     return 0;
 }
