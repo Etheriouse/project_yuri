@@ -3,6 +3,9 @@
 
 #include "Game.hpp"
 
-extern Game *g_game;
+
+extern Game g_game;
+void set_game(std::string filename);
+void save_game(std::string filename);
 
 #endif

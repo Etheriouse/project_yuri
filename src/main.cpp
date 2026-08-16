@@ -5,17 +5,17 @@
 #include "GameWindow.hpp"
 #include "Map/Map.hpp"
 #include "Game/Player.hpp"
-#include "Serializer/Serializer.hpp"
+
+#include "Global.hpp"
 
 int main(int argc, char const *argv[])
 {
     std::string filename_save = "game.rrl";
-    // Serializer *s = new Serializer(filename_save, SAVE_MODE);
-   // Serializer *s = new Serializer(filename_save, LOAD_MODE);
-    Game *g = new Game();
-    // g->save(*s);
-    // g->load(*s);
-    g->debug_print();
-    // delete s;
+    set_game(filename_save);
+    g_game.debug_print();
+
+    // run game
+
+    save_game(filename_save);
     return 0;
 }

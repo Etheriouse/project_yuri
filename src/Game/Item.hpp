@@ -13,7 +13,7 @@ public:
     Item(std::string name, std::function<void(std::vector<void*>)> function)
         : name(name), _doSomething(function)
     {
-        this->uid = g_game->get_uid();
+        this->uid = g_game.get_uid();
     }
 
     void doSomething(std::vector<void*> args)
