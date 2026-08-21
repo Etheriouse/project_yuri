@@ -7,24 +7,17 @@ class Life : public Entity
 {
 
 public:
-    Life(std::string name, unsigned int hp, unsigned int mana) : Entity(name), hp(hp), mana(mana){};
+    Life();
+    Life(std::string name, unsigned int hp, unsigned int mana);
 
-    void load(Serializer& s) override {
-        Entity::load(s);
-        s.load(hp);
-        s.load(mana);
-    }
+    void load(Serializer& s) override;
+    void save(Serializer& s) const override;
+    TypeEntity type() override;
 
-    void save(Serializer& s) override {
-        Entity::save(s);
-        s.save(hp);
-        s.save(mana);
-    }
+    void process(long double delta, uint64_t tick) override;
+    void render(long double delta, uint64_t tick) override;
 
-    void debug_print() override {
-        Entity::debug_print();
-        std::cout << "hp: " << hp << " mana: " << mana << std::endl;
-    }
+    void debug_print() override;
 
     unsigned int hp, mana;
 };

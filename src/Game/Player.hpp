@@ -3,24 +3,23 @@
 
 #include "Life.hpp"
 
+
 class Player : public Life {
 public:
-    Player(std::string name, unsigned int hp, unsigned int mana) : Life(name, hp, mana) {
+    Player();
+    Player(std::string name, unsigned int hp, unsigned int mana);
 
-    }
+    void load(Serializer& s) override;
+    void save(Serializer& s) const override;
+    TypeEntity type() override;
 
-    void load(Serializer& s) override {
-        Life::load(s);
-    }
+    void process(long double delta, uint64_t tick) override;
+    void render(long double delta, uint64_t tick) override;
 
-    void save(Serializer& s) override {
-        Life::save(s);
-    }
 
-    void debug_print() override {
-        Life::debug_print();
-    }
+    void debug_print() override;
 
+    unsigned long int p_x, p_y;
 };
 
 #endif

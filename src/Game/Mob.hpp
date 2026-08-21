@@ -5,9 +5,15 @@
 
 class Mob : public Life {
 public:
-    Mob(std::string name, unsigned int hp, unsigned int mana) : Life(name, hp, mana) {
-        
-    }
+
+    Mob();
+    Mob(std::string name, unsigned int hp, unsigned int mana);
+
+    void load(Serializer &s) override;
+    void save(Serializer &s) const override;
+
+    TypeEntity type() override;
+    void debug_print() override;
 
 };
 

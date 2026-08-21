@@ -1,0 +1,4 @@
+[header]
+- vector<id, offset>
+[chunks]
+- array chunk

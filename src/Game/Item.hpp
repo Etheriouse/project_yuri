@@ -4,22 +4,12 @@
 #include <string>
 #include <functional>
 
-#include "../Global.hpp"
-
 class Item
 {
 
 public:
-    Item(std::string name, std::function<void(std::vector<void*>)> function)
-        : name(name), _doSomething(function)
-    {
-        this->uid = g_game.get_uid();
-    }
-
-    void doSomething(std::vector<void*> args)
-    {
-        _doSomething(args);
-    }
+    Item(std::string name, std::function<void(std::vector<void*>)> function);
+    void doSomething(std::vector<void*> args);
 
     std::string name;
 

@@ -2,35 +2,36 @@
 #define GAME_ENTITY_HPP
 
 #include <string>
-#include "../Serializer/Serializer.hpp"
+
+class Serializer;
+
+enum TypeEntity {
+    _Entity,
+    _Life,
+    _Player,
+    _Mob
+};
 
 class Entity
 {
 
 public:
 
-    Entity(std::string name) : name(name)
-    {
-
-    }
+    Entity();
+    Entity(std::string name);
 
     unsigned long int uid;
     std::string name;
 
 
-    virtual void load(Serializer& s) {
-        s.load(uid);
-        s.load(name);
-    }
+    virtual void load(Serializer& s);
+    virtual void save(Serializer& s) const;
+    virtual TypeEntity type();
 
-    virtual void save(Serializer& s) {
-        s.save(uid);
-        s.save(name);
-    }
+    virtual void process(long double delta, uint64_t tick);
+    virtual void render(long double delta, uint64_t tick);
 
-    virtual void debug_print() {
-        std::cout << "uid: " << uid << " name: " << name << std::endl;
-    }
+    virtual void debug_print();
 
 };
 

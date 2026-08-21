@@ -3,6 +3,9 @@
 
 #include "Map/WorldMap.hpp"
 #include "Game/Player.hpp"
+#include <thread>
+
+class Map;
 
 class Game {
 
@@ -17,16 +20,35 @@ class Game {
             this->ng++;
         }
 
-        void save(Serializer& s);
+        void run();
+        void process_f();
+        void render_f();
+
+        void save(Serializer& s) const;
         void load(Serializer& s);
 
         void debug_print();
 
     private:
-        unsigned long int uid_counter ;
+
+        // to save to disk
+        unsigned long int uid_counter;
         unsigned int ng;
-        WorldMap *world_map;
-        Player *p;
+
+        WorldMap world_map;
+        Map *actual_encouter_map;
+        Player p;
+
+        // to not save to disk
+        bool running = true;
+
+        std::thread process;
+        uint64_t process_tick;
+        long double delta;
+
+        std::thread render;
+        uint64_t render_tick;
+
 
 };
 

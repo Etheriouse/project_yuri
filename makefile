@@ -4,7 +4,7 @@ SRC_DIR := src
 OBJ_DIR := bin
 TARGET := app
 
-CXXFLAGS := -std=c++20 -Wall -Wextra -I$(SRC_DIR)
+CXXFLAGS := -std=c++20 -Wall -Wextra -I$(SRC_DIR) -g
 LDLIBS := -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 SOURCES := $(shell find $(SRC_DIR) -type f -name '*.cpp')

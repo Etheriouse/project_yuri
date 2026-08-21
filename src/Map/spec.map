@@ -1,0 +1,11 @@
+[size]
+width
+height
+[tiles]
+array cell
+- cell
+[entity]
+array entity
+- entity_class
+- entity
+- pos xy
