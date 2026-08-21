@@ -8,17 +8,7 @@
 #include <memory>
 #include <typeinfo>
 
-#include "../Game/Entity.hpp"
-
-constexpr uint64_t dead_chunk = 0;
-constexpr uint64_t alive_chunk = UINT64_MAX;
-constexpr uint64_t end_chunk = UINT64_MAX-1;
-
-enum Serializer_mode
-{
-    SERIALIZER_SAVE_MODE,
-    SERIALIZER_LOAD_MODE
-};
+class Entity;
 
 typedef struct {
     uint64_t id;
@@ -26,7 +16,11 @@ typedef struct {
 } id_offset;
 
 enum WorldTile {
-
+    Wall,
+    Water,
+    Grass,
+    Air,
+    Void,
 };
 
 // interact can dirty chunk 
@@ -36,17 +30,26 @@ typedef struct {
 } WorldCell;
 
 typedef struct {
+    uint64_t id;
+    uint32_t pc_x, pc_y;
+    Entity *entity;
+} ChunkEntity;
+
+typedef struct {
     unsigned short s_layer;
     unsigned short layers;
     std::vector<WorldCell> cells;
+    std::vector<ChunkEntity> entitys;
     uint32_t p_x, p_y;
     bool dirty;
 } Chunk;
 
-typedef struct {
-    uint64_t id;
-    Entity *entity;
-} ChunkEntity;
+enum Serializer_mode
+{
+    SERIALIZER_SAVE_MODE,
+    SERIALIZER_LOAD_MODE
+};
+
 
 class Serializer;
 
@@ -127,7 +130,8 @@ public:
     void load(std::string &s);
     void load(WorldCell &value);
     void load(id_offset &value);
-    void load(Chunk &value, std::vector<ChunkEntity> &entitys);
+    void load(Chunk &value);
+    void load(ChunkEntity &value);
 
 
     template <typename T>
@@ -179,7 +183,9 @@ public:
     void save(const std::string &s);
     void save(const WorldCell &value);
     void save(const id_offset &value);
-    void save(const Chunk &value, std::vector<ChunkEntity> &entitys);
+    void save(const Chunk &value);
+    void save(const ChunkEntity &value);
+
 
     void set_read(uint64_t offset);
     void set_write(uint64_t offset);
