@@ -6,9 +6,8 @@
 #include <string>
 #include <map>
 
-#define CHUNK_WIDTH 16
-#define CHUNK_HEIGHT 16
-
+constexpr uint8_t CHUNK_WIDTH = 16;
+constexpr uint8_t CHUNK_HEIGHT = 16;
 constexpr uint64_t dead_chunk = 0;
 constexpr uint64_t alive_chunk = UINT64_MAX;
 constexpr uint64_t end_chunk = UINT64_MAX-1;
@@ -33,53 +32,63 @@ typedef struct {
 } WorldCell;
 
 typedef struct {
+    uint64_t id;
+    uint32_t pc_x, pc_y;
+    Entity *entity;
+} ChunkEntity;
+
+typedef struct {
     unsigned short s_layer;
     unsigned short layers;
     std::vector<WorldCell> cells;
+    std::vector<ChunkEntity> entitys;
     uint32_t p_x, p_y;
     bool dirty;
 } Chunk;
-
-typedef struct {
-    uint64_t id;
-    Entity *entity;
-} ChunkEntity;
 
 class WorldMap {
 
     public:
         WorldMap();
-        WorldMap(Player *p, std::string filename_map);
+        WorldMap(Player *p, std::string filename_map, unsigned short distance);
 
-        void load(Serializer& s);
-        void save(Serializer& s) const;
+        void load();
+        void save();
 
-        void load(uint64_t id, Chunk &c);
-        void unload(uint64_t id);
-        void save(uint64_t id, Chunk& c);
-        void compact_file();
+        void load_file(Serializer &s);
+        void save_file(Serializer &s) const;
 
+        void load_chunk(uint64_t id, Chunk &c);
+        void save_chunk(uint64_t id, Chunk& c);
+        void unload_entity_chunk(uint64_t id);
+        
         void load_header_chunk();
         void process(long double delta, uint64_t tick);
         void render(long double delta, uint64_t tick);
 
         void debug_print();
 
-    private:
-        // share pos player with
-        unsigned long int *pp_x, *pp_y;
+        inline uint64_t get_id_chunk(uint32_t x, uint32_t y) {
+            return (static_cast<uint64_t>(x) << 32) | static_cast<uint64_t>(y);
+        }
 
-        // change to chunck, load from fileglobalmap
-        std::vector<WorldCell> map;
-        std::map<uint64_t, uint64_t> header;
+    private:
+        // share pos player with, value is réel coordinante, not tile coordinate
+        uint32_t *pp_x, *pp_y;
 
         std::string filename_map;
+        unsigned short load_distance;
+        
+        // change to chunck, load from fileglobalmap
+        std::map<uint64_t, uint64_t> header;
+        uint64_t offset_entity;
+
 
         Serializer *file_reader;
         std::vector<Chunk> _map;
 
         // entity associate to to chunk can dirty
-        // todo change to vector<id_chunk, entity>
+        // todo change to vector<id_chunk, pos_of_entity_inside, entity>
         std::vector<ChunkEntity> things;
         Player *p;
 

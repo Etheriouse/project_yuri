@@ -99,7 +99,7 @@ void Game::load(Serializer &s)
     s.load(this->ng);
     s.load(this->uid_counter);
     p.load(s);
-    world_map.load(s);
+    world_map.load_file(s);
 }
 
 void Game::save(Serializer &s) const
@@ -107,7 +107,7 @@ void Game::save(Serializer &s) const
     s.save(this->ng);
     s.save(this->uid_counter);
     p.save(s);
-    world_map.save(s);
+    world_map.save_file(s);
 }
 
 void Game::debug_print()

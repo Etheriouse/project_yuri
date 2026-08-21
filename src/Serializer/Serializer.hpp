@@ -98,7 +98,8 @@ public:
     void load(WorldCell &value);
     void load(Cell &value);
     void load(id_offset &value);
-    void load(Chunk &value, std::vector<ChunkEntity> &entitys);
+    void load(Chunk &value);
+    void load(ChunkEntity &value);
 
 
     template <typename T>
@@ -151,7 +152,9 @@ public:
     void save(const WorldCell &value);
     void save(const Cell &value);
     void save(const id_offset &value);
-    void save(const Chunk &value, std::vector<ChunkEntity> &entitys);
+    void save(const Chunk &value);
+    void save(const ChunkEntity &value);
+
 
     void set_read(uint64_t offset);
     void set_write(uint64_t offset);

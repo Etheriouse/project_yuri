@@ -19,7 +19,7 @@ public:
 
     void debug_print() override;
 
-    unsigned long int p_x, p_y;
+    uint32_t p_x, p_y;
 };
 
 #endif

@@ -4,14 +4,7 @@
 #include "../Game/Player.hpp"
 #include "../Game/Entity.hpp"
 
-WorldMap::WorldMap() : p(new Player()), filename_map("*.wmap")
-{
-    // link pos player with pp
-    this->pp_x = &p->p_x;
-    this->pp_y = &p->p_y;
-}
-
-WorldMap::WorldMap(Player *p, std::string file) : p(p), filename_map(file)
+WorldMap::WorldMap() : p(new Player()), filename_map("wmap.wmap"), load_distance(10)
 {
     // link pos player with pp
     this->pp_x = &p->p_x;
@@ -19,28 +12,71 @@ WorldMap::WorldMap(Player *p, std::string file) : p(p), filename_map(file)
     this->file_reader = new Serializer(filename_map, SERIALIZER_LOAD_MODE);
 }
 
-void WorldMap::load(Serializer &s)
+WorldMap::WorldMap(Player *p, std::string file, unsigned short distance) : p(p), filename_map(file), load_distance(distance)
 {
-    s.load(map);
+    // link pos player with pp
+    this->pp_x = &p->p_x;
+    this->pp_y = &p->p_y;
+    this->file_reader = new Serializer(filename_map, SERIALIZER_LOAD_MODE);
 }
 
-void WorldMap::save(Serializer &s) const
-{
-    s.save(map);
+void WorldMap::load_file(Serializer &s) {
+    printf("function load worldmap file is not implemented\n");
 }
 
-void WorldMap::load(uint64_t id, Chunk &c)
+void WorldMap::save_file(Serializer &s) const {
+    printf("function save worldmap file is not implemented\n");
+}
+
+void WorldMap::load()
+{
+    // load all chucnk inside distance on player
+
+    // chunk pos player
+    uint32_t cppx = *pp_x % CHUNK_WIDTH, cppy = *pp_y % CHUNK_HEIGHT;
+    uint32_t start_x = cppx - load_distance, start_y = cppy - load_distance;
+
+    for (uint32_t y = start_y; y < cppy + load_distance; y++)
+    {
+        for (uint32_t x = start_x; x < cppx + load_distance; x++)
+        {
+            Chunk c;
+            load_chunk(get_id_chunk(x, y), c);
+            for (auto &entity : c.entitys)
+            {
+                things.push_back(entity);
+            }
+            _map.push_back(c);
+        }
+    }
+}
+
+void WorldMap::save()
+{
+    // save all chucnk loaded
+    // unload all entity
+    uint64_t id;
+    for (auto &ch : _map)
+    {
+        id = get_id_chunk(ch.p_x, ch.p_y);
+        save_chunk(id, ch);
+        unload_entity_chunk(id);
+    }
+}
+
+/** A refaire avec la nouvelle spec de fichier */
+void WorldMap::load_chunk(uint64_t id, Chunk &c)
 {
     auto index = this->header.find(id);
     if (index == this->header.end())
         return;
     uint64_t offset = index->second, before = this->file_reader->where_read();
     this->file_reader->set_read(offset);
-    this->file_reader->load(c, things);
+    this->file_reader->load(c);
     this->file_reader->set_read(before);
 }
 
-void WorldMap::unload(uint64_t id)
+void WorldMap::unload_entity_chunk(uint64_t id)
 {
     auto it = things.begin();
     while (it != things.end())
@@ -50,7 +86,7 @@ void WorldMap::unload(uint64_t id)
     }
 }
 
-void WorldMap::save(uint64_t id, Chunk &c)
+void WorldMap::save_chunk(uint64_t id, Chunk &c)
 {
     if (!c.dirty)
         return;
@@ -59,68 +95,14 @@ void WorldMap::save(uint64_t id, Chunk &c)
     if (index == this->header.end())
         return;
 
-    uint64_t offset = index->second, before = this->file_reader->where_write();
+    uint64_t offset = index->second, before = file_reader->where_write();
 
-    // save chunk at end
-    file_reader->end_write();
-    file_reader->save(c, things);
-
-    // write shit on past place
     file_reader->set_write(offset);
-    file_reader->save(dead_chunk);
-
-    this->file_reader->set_write(before);
+    file_reader->save(c);
+    file_reader->set_write(before);
 }
 
-void WorldMap::compact_file()
-{
-    std::vector<id_offset> header_;
-
-    Serializer read(filename_map, SERIALIZER_LOAD_MODE);
-    Serializer write(filename_map + ".tmp", SERIALIZER_SAVE_MODE);
-
-    read.load(header_);
-    write.save(header_);
-    header_.clear();
-
-    uint64_t isalive = 0, readed = 6498452, offset_to_write, offset_from, id = 0;
-    Chunk tmp;
-
-    while (read.where_read() < read.end_read())
-    {
-
-        offset_from = read.where_read();
-        read.load(isalive);
-
-        if (isalive == dead_chunk)
-        { // read to another endchunk
-            do
-            {
-                read.load(readed);
-            } while (readed != end_chunk);
-            continue;
-        };
-
-        if (isalive != alive_chunk)
-            throw std::runtime_error("Invalid chunk marker");
-
-            
-        read.set_read(offset_from);
-        offset_to_write = write.where_write();
-
-        // write chunk, and get id;
-        // vector is clear at each iteration
-        std::vector<ChunkEntity> tmpv;
-        read.load(tmp, tmpv);
-        id = static_cast<uint64_t>(tmp.p_x) << 32 | static_cast<uint64_t>(tmp.p_y);
-        write.save(tmp, tmpv);
-
-        header_.emplace_back(id, offset_to_write);
-    }
-
-    write.set_write(0);
-    write.save(header_);
-}
+/** ------------------------------------------------------ */
 
 void WorldMap::load_header_chunk()
 {
@@ -150,5 +132,5 @@ void WorldMap::render(long double delta, uint64_t tick)
 
 void WorldMap::debug_print()
 {
-    std::cout << "map size: " << map.size() << std::endl;
+    // std::cout << "map size: " << map.size() << std::endl;
 }

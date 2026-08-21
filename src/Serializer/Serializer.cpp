@@ -50,49 +50,46 @@ void Serializer::load(id_offset &value)
     load(value.offset);
 }
 
-void Serializer::load(Chunk &value, std::vector<ChunkEntity> &entitys)
+void Serializer::load(Chunk &value)
 {
-    uint64_t id = (static_cast<uint64_t>(value.p_x) << 32) | static_cast<uint64_t>(value.p_y);
-
-    uint64_t alive = 0, end_c;
-    load(alive);
     load(value.layers);
     load(value.s_layer);
     load(value.p_x);
     load(value.p_y);
     load(value.dirty);
     load(value.cells);
-    size_t nb_entitys = 0;
+    load(value.entitys);
+}
+
+void Serializer::load(ChunkEntity &value)
+{
+    load(value.id);
+    load(value.pc_x);
+    load(value.pc_y);
     TypeEntity type;
     std::unique_ptr<Entity> entity;
-    load(nb_entitys);
-    for (size_t i = 0; i < nb_entitys; i++)
+    load(type);
+    switch (type)
     {
-        load(type);
-        std::cout << type << std::endl;
-        switch (type)
-        {
-        case TypeEntity::_Mob:
-            entity = std::make_unique<Mob>();
-            break;
+    case TypeEntity::_Mob:
+        entity = std::make_unique<Mob>();
+        break;
 
-        case TypeEntity::_Player:
-            entity = std::make_unique<Player>();
-            break;
+    case TypeEntity::_Player:
+        entity = std::make_unique<Player>();
+        break;
 
-        case TypeEntity::_Life:
-            entity = std::make_unique<Life>();
-            break;
+    case TypeEntity::_Life:
+        entity = std::make_unique<Life>();
+        break;
 
-        case TypeEntity::_Entity:
-            entity = std::make_unique<Entity>();
-        default:
-            break;
-        }
+    case TypeEntity::_Entity:
+        entity = std::make_unique<Entity>();
+    default:
+        break;
     }
     load(*entity);
-    entitys.push_back({id, entity.get()});
-    load(end_c);
+    value.entity = entity.get();
 }
 
 void Serializer::save(const std::string &value)
@@ -121,31 +118,24 @@ void Serializer::save(const id_offset &value)
     save(value.offset);
 }
 
-void Serializer::save(const Chunk &value, std::vector<ChunkEntity> &entitys)
+void Serializer::save(const Chunk &value)
 {
-    uint64_t id = (static_cast<uint64_t>(value.p_x) << 32) | static_cast<uint64_t>(value.p_y);
-
-    std::vector<Entity *> in_chunk;
-    for (const auto &[_id, e] : entitys)
-    {
-        if (id == _id)
-            in_chunk.push_back(e);
-    }
-
-    save(alive_chunk);
     save(value.layers);
     save(value.s_layer);
     save(value.p_x);
     save(value.p_y);
     save(value.dirty);
     save(value.cells);
-    save(in_chunk.size());
-    for (Entity *e : in_chunk)
-    {
-        save(e->type());
-        save(*e);
-    }
-    save(end_chunk);
+    save(value.entitys);
+}
+
+void Serializer::save(const ChunkEntity &value)
+{
+    save(value.id);
+    save(value.pc_x);
+    save(value.pc_y);
+    save(value.entity->type());
+    save(*value.entity);
 }
 
 void Serializer::set_read(uint64_t offset)
@@ -175,8 +165,9 @@ uint64_t Serializer::where_write()
 /**
  * Tell where is end file for read
  */
-uint64_t Serializer::end_read() {
-   return read.end;
+uint64_t Serializer::end_read()
+{
+    return read.end;
 }
 
 /**
@@ -186,4 +177,3 @@ void Serializer::end_write()
 {
     write.seekp(0, std::ios::end);
 }
-
