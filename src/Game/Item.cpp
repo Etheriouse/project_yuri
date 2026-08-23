@@ -1,13 +1,39 @@
 #include "../Global.hpp"
+#include "../Serializer/Serializer.hpp"
 #include "Item.hpp"
+#include "ItemLoader.hpp"
+#include "Entity.hpp"
 
-Item::Item(std::string name, std::function<void(std::vector<void *>)> function)
-    : name(name), _doSomething(function)
+Item::Item() : name("undefined"), type(ItemType::Default)
 {
-    this->uid = g_game.get_uid();
+    uid = g_game.get_uid();
+    _doSomething = getDoSomething(type);
 }
 
-void Item::doSomething(std::vector<void *> args)
+Item::Item(std::string name, ItemType type)
+    : name(name), type(type)
 {
-    _doSomething(args);
+    uid = g_game.get_uid();
+    _doSomething = getDoSomething(type);
+}
+
+void Item::doSomething(Entity *target, Entity *source, std::vector<uint64_t> args)
+{
+    _doSomething(target, source, args);
+}
+
+void Item::load(Serializer &s)
+{
+    s.load(name);
+    s.load(type);
+    s.load(uid);
+
+    _doSomething = getDoSomething(type);
+}
+
+void Item::save(Serializer &s) const
+{
+    s.save(name);
+    s.save(type);
+    s.save(uid);
 }

@@ -33,6 +33,8 @@ public:
 
     virtual void debug_print();
 
+    unsigned int x, y;
+
 };
 
 #endif

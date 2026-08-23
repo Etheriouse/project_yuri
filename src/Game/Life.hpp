@@ -19,7 +19,7 @@ public:
 
     void debug_print() override;
 
-    unsigned int hp, mana;
+    unsigned int hp, hpmax, mana, manamax;
 };
 
 #endif

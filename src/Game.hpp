@@ -1,7 +1,6 @@
 #ifndef GAME_GAME_HPP
 #define GAME_GAME_HPP
 
-#include "Map/WorldMap.hpp"
 #include "Game/Player.hpp"
 #include <thread>
 
@@ -20,6 +19,8 @@ class Game {
             this->ng++;
         }
 
+        // when fisrt time run new save;
+        void new_game(std::string filename);
         void run();
         void process_f();
         void render_f();
@@ -35,8 +36,6 @@ class Game {
         unsigned long int uid_counter;
         unsigned int ng;
 
-        WorldMap world_map;
-        Map *actual_encouter_map;
         Player p;
 
         // to not save to disk

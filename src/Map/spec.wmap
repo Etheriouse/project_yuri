@@ -1,6 +1,0 @@
-[header]
-- vector<id, offset>
-[chunks]
-- array chunk
-[ChunkEntity]
-- vector

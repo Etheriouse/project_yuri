@@ -2,6 +2,7 @@
 #define GAME_PLAYER_HPP
 
 #include "Life.hpp"
+#include "Item.hpp"
 
 
 class Player : public Life {
@@ -16,10 +17,15 @@ public:
     void process(long double delta, uint64_t tick) override;
     void render(long double delta, uint64_t tick) override;
 
-
     void debug_print() override;
 
-    uint32_t p_x, p_y;
+
+    // gameplay
+    void heal(uint64_t value);
+
+
+
+    std::vector<Item> inventory;
 };
 
 #endif

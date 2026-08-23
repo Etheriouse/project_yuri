@@ -3,19 +3,37 @@
 
 #include <string>
 #include <functional>
+#include <vector>
+
+class Entity;
+class Serializer;
+
+typedef std::function<void(Entity* target, Entity* source, std::vector<uint64_t> args)> ItemFunction;
+
+enum ItemType
+{
+    Default,
+    Estus
+};
 
 class Item
 {
 
 public:
-    Item(std::string name, std::function<void(std::vector<void*>)> function);
-    void doSomething(std::vector<void*> args);
+    Item();
+    Item(std::string name, ItemType type);
+    void doSomething(Entity* target, Entity* source, std::vector<uint64_t> args);
+
+
+    void load(Serializer &s);
+    void save(Serializer &s) const;
 
     std::string name;
 
 private:
     unsigned long int uid;
-    std::function<void(std::vector<void*>)> _doSomething;
+    ItemType type;
+    ItemFunction _doSomething;
 };
 
 #endif

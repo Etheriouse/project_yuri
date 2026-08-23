@@ -14,7 +14,6 @@ enum Serializer_mode
     SERIALIZER_LOAD_MODE
 };
 
-#include "../Map/WorldMap.hpp"
 #include "../Map/Map.hpp"
 #include "../Game/Mob.hpp"
 
@@ -95,12 +94,7 @@ public:
     }
 
     void load(std::string &s);
-    void load(WorldCell &value);
     void load(Cell &value);
-    void load(id_offset &value);
-    void load(Chunk &value);
-    void load(ChunkEntity &value);
-
 
     template <typename T>
     void save(const T &n)
@@ -149,11 +143,7 @@ public:
     }
 
     void save(const std::string &s);
-    void save(const WorldCell &value);
     void save(const Cell &value);
-    void save(const id_offset &value);
-    void save(const Chunk &value);
-    void save(const ChunkEntity &value);
 
 
     void set_read(uint64_t offset);
