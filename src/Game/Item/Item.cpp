@@ -1,23 +1,24 @@
-#include "../Global.hpp"
-#include "../Serializer/Serializer.hpp"
+#include "Serializer/Serializer.hpp"
 #include "Item.hpp"
 #include "ItemLoader.hpp"
 #include "Entity.hpp"
 
+#include "Global.hpp"
+
 Item::Item() : name("undefined"), type(ItemType::Default)
 {
-    uid = g_game.get_uid();
+    uid = app->getUID();
     _doSomething = getDoSomething(type);
 }
 
 Item::Item(std::string name, ItemType type)
     : name(name), type(type)
 {
-    uid = g_game.get_uid();
+    uid = app->getUID();
     _doSomething = getDoSomething(type);
 }
 
-void Item::doSomething(Entity *target, Entity *source, std::vector<uint64_t> args)
+void Item::doSomething(Entity *target, Entity *source, std::vector<int64_t> args)
 {
     _doSomething(target, source, args);
 }

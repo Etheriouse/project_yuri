@@ -4,7 +4,9 @@ SRC_DIR := src
 OBJ_DIR := bin
 TARGET := app
 
-CXXFLAGS := -std=c++20 -Wall -Wextra -I$(SRC_DIR) -g
+INCLUDE_DIRS := $(shell find $(SRC_DIR) -type d)
+CXXFLAGS := -std=c++20 -Wall -Wextra -g $(addprefix -I,$(INCLUDE_DIRS))
+
 LDLIBS := -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 SOURCES := $(shell find $(SRC_DIR) -type f -name '*.cpp')
@@ -31,8 +33,9 @@ list:
 	@$(foreach src,$(SOURCES),echo "  $(src)";)
 	@echo ""
 	@echo "Objects:"
-	@$(foreach obj,$(OBJECTS),echo "  $(obj);)
+	@$(foreach obj,$(OBJECTS),echo "  $(obj)";)
 
 debug:
 	@echo "Sources = $(SOURCES)"
 	@echo "Objects = $(OBJECTS)"
+	@echo "Include dirs = $(INCLUDE_DIRS)"

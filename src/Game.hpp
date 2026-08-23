@@ -1,17 +1,17 @@
 #ifndef GAME_GAME_HPP
 #define GAME_GAME_HPP
 
-#include "Game/Player.hpp"
+#include "Player.hpp"
+#include "Dungeon.hpp"
 #include <thread>
 
-class Map;
 
 class Game {
 
     public:
         Game();
     
-        inline unsigned long int get_uid()  {
+        inline uint64_t _getUID()  {
             return this->uid_counter++;
         }
 
@@ -19,11 +19,12 @@ class Game {
             this->ng++;
         }
 
+
         // when fisrt time run new save;
         void new_game(std::string filename);
         void run();
-        void process_f();
-        void render_f();
+        void process(double delta, uint64_t tick);
+        void render(double delta, uint64_t tick);
 
         void save(Serializer& s) const;
         void load(Serializer& s);
@@ -33,21 +34,13 @@ class Game {
     private:
 
         // to save to disk
-        unsigned long int uid_counter;
-        unsigned int ng;
+        unsigned long int uid_counter = 0;
+        unsigned int ng = 0;
 
         Player p;
-
+        
         // to not save to disk
-        bool running = true;
-
-        std::thread process;
-        uint64_t process_tick;
-        long double delta;
-
-        std::thread render;
-        uint64_t render_tick;
-
+        Dungeon *dungeon_act;
 
 };
 

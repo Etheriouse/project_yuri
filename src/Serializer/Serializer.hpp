@@ -14,8 +14,8 @@ enum Serializer_mode
     SERIALIZER_LOAD_MODE
 };
 
-#include "../Map/Map.hpp"
-#include "../Game/Mob.hpp"
+#include "Game/Map/Map.hpp"
+#include "Game/Entity/Mob.hpp"
 
 class Serializer;
 

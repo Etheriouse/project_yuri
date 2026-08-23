@@ -20,7 +20,9 @@ public:
     Entity();
     Entity(std::string name);
 
-    unsigned long int uid;
+    ~Entity();
+
+    uint64_t uid;
     std::string name;
 
 

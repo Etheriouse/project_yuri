@@ -1,6 +1,6 @@
 #include "Serializer.hpp"
-#include "../Game/Player.hpp"
-#include "../Game/Mob.hpp"
+#include "Game/Player.hpp"
+#include "Game/Mob.hpp"
 #include <stdexcept>
 
 Serializer::Serializer(std::string filename, Serializer_mode mode)

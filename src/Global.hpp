@@ -1,11 +1,10 @@
 #ifndef GAME_GLOBAL_HPP
 #define GAME_GLOBAL_HPP
 
-#include "Game.hpp"
+#include "Application.hpp"
 
+void setApp(Application *_app);
 
-extern Game g_game;
-void set_game(std::string filename);
-void save_game(std::string filename);
+extern Application* app;
 
 #endif

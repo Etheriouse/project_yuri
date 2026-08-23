@@ -1,9 +1,12 @@
 #include "Life.hpp"
-#include "../Serializer/Serializer.hpp"
+#include "Serializer.hpp"
 
 Life::Life() : Entity(), hp(10), mana(5) {};
 
 Life::Life(std::string name, unsigned int hpmax, unsigned int manamax) : Entity(name), hp(hpmax), hpmax(hpmax), mana(manamax), manamax(manamax) {};
+
+Life::~Life() {
+    }
 
 void Life::load(Serializer &s)
 {

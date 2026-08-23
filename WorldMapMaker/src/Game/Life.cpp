@@ -1,5 +1,5 @@
 #include "Life.hpp"
-#include "../Serializer/Serializer.hpp"
+#include "Serializer/Serializer.hpp"
 
 Life::Life() : Entity(), hp(10), mana(5) {};
 

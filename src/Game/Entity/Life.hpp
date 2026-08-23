@@ -1,14 +1,16 @@
-#ifndef GAME_PLAYER_HPP
-#define GAME_PLAYER_HPP
+#ifndef GAME_LIFE_HPP
+#define GAME_LIFE_HPP
 
-#include "Life.hpp"
-#include "Item.hpp"
+#include "Entity.hpp"
 
+class Life : public Entity
+{
 
-class Player : public Life {
 public:
-    Player();
-    Player(std::string name, unsigned int hp, unsigned int mana);
+    Life();
+    Life(std::string name, unsigned int hp, unsigned int mana);
+
+    ~Life();
 
     void load(Serializer& s) override;
     void save(Serializer& s) const override;
@@ -19,13 +21,7 @@ public:
 
     void debug_print() override;
 
-
-    // gameplay
-    void heal(uint64_t value);
-
-
-
-    std::vector<Item> inventory;
+    unsigned int hp, hpmax, mana, manamax;
 };
 
 #endif

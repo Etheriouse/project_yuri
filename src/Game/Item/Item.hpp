@@ -8,12 +8,13 @@
 class Entity;
 class Serializer;
 
-typedef std::function<void(Entity* target, Entity* source, std::vector<uint64_t> args)> ItemFunction;
+typedef std::function<void(Entity* target, Entity* source, std::vector<int64_t> args)> ItemFunction;
 
 enum ItemType
 {
     Default,
-    Estus
+    Estus,
+    Seppuku,
 };
 
 class Item
@@ -22,7 +23,7 @@ class Item
 public:
     Item();
     Item(std::string name, ItemType type);
-    void doSomething(Entity* target, Entity* source, std::vector<uint64_t> args);
+    void doSomething(Entity* target, Entity* source, std::vector<int64_t> args);
 
 
     void load(Serializer &s);
@@ -31,7 +32,7 @@ public:
     std::string name;
 
 private:
-    unsigned long int uid;
+    uint64_t uid;
     ItemType type;
     ItemFunction _doSomething;
 };

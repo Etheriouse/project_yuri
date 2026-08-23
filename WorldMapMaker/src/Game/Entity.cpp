@@ -1,5 +1,5 @@
 #include "Entity.hpp"
-#include "../Serializer/Serializer.hpp"
+#include "Serializer/Serializer.hpp"
 
 Entity::Entity() : name("undefined") {
 
