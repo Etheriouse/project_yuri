@@ -70,7 +70,9 @@ public:
     std::vector<Entity *> things;
     Player *p;
 
-    float tile_width = 100, tile_height = 100;
+    float tile_width = 150, tile_height = 150, start_draw_x, start_draw_y;
+
+    int SPEED = 100;
 
     bool create_from_file = false;
     bool is_active;

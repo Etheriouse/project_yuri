@@ -12,24 +12,28 @@ Application::Application()
     InitWindow(width, height, "Game");
     _LoadTexture();
     LoadLanguage();
-
-    game = new Game();
-    Serializer s("game.rrl", SERIALIZER_LOAD_MODE);
-    game->load(s);
-    game->run();
+    gestionaryKeyboard.keydown.resize(KEY_COUNT);
 }
 
 Application::~Application()
 {
     delete game;
+
 }
 
 int Application::run()
 {
+
+    // TODO change with menu 
+    game = new Game();
+    Serializer s("game.rrl", SERIALIZER_LOAD_MODE);
+    game->load(s);
+    game->run();
+
     cout << "Hello world Game !" << endl
          << "Game is launching. . ." << endl;
 
-    SetTargetFPS(fps);
+    SetTargetFPS(0);
 
     process = std::thread(&Application::process_f, this);
 
@@ -59,6 +63,8 @@ void Application::_LoadTexture()
     gestionaryTextures["grass_tile"] = LoadTexture("assets/tiles/grass.png");
     gestionaryTextures["stone_tile"] = LoadTexture("assets/tiles/stone.png");
     gestionaryTextures["wood_bridge_tile"] = LoadTexture("assets/tiles/wood_bridge.png");
+    gestionaryTextures["air_tile"] = LoadTexture("assets/tiles/air.png");
+    gestionaryTextures["void_tile"] = LoadTexture("assets/tiles/void.png");
 }
 
 void Application::_UnLoadTexture()
@@ -113,13 +119,13 @@ void Application::process_f()
     while (running && !app->isClosing())
     {
         tmp = getNanoS();
-        delta = ((long double)(tmp - last)) / 1'000'000'000.0L;
+        delta_p = ((long double)(tmp - last)) / 1'000'000'000.0L;
         last = tmp;
 
-        acc_s += delta;
+        acc_s += delta_p;
 
         if(game != nullptr) {
-            game->process(delta, process_tick);
+            game->process(delta_p, process_tick);
         }
 
         if (acc_s > 1)
@@ -144,15 +150,15 @@ void Application::render_f()
     while (running && !app->isClosing())
     {
         tmp = getNanoS();
-        delta = ((long double)(tmp - last)) / 1'000'000'000.0L;
+        delta_r = ((long double)(tmp - last)) / 1'000'000'000.0L;
         last = tmp;
 
-        acc_s += delta;
+        acc_s += delta_r;
 
         BeginDrawing();
         ClearBackground(WHITE);
         if(game != nullptr) {
-            game->render(delta, render_tick);
+            game->render(delta_r, render_tick);
         }
        
         EndDrawing();
@@ -164,8 +170,22 @@ void Application::render_f()
             acc_s = 0;
         }
 
+        process_raylib();
+
         tick_s++;
         render_tick++;
-        appIsClosing = WindowShouldClose();
+    }
+}
+
+bool Application::_IsKeyDown(KeyboardKey k) {
+    bool b = gestionaryKeyboard.keydown[k];
+    return b;
+}
+
+
+void Application::process_raylib() {
+    appIsClosing = WindowShouldClose();
+    for(int i = 0; i<KEY_COUNT; i++) {
+        gestionaryKeyboard.keydown[i] = IsKeyDown(static_cast<KeyboardKey>(i));
     }
 }

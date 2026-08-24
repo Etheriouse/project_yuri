@@ -9,6 +9,11 @@ class Dungeon
 
 public:
     Dungeon();
+    ~Dungeon() {
+        for(auto fl : floors) {
+            if(fl != nullptr) delete fl;
+        }
+    }
 
     inline void nextFloor() {
         if(floor >= rooftop) return exit();

@@ -14,6 +14,12 @@ Game::Game() : uid_counter(0), ng(1)
     this->p = Player("player", 10, 10);
 }
 
+Game::~Game() {
+    if(dungeon_act != nullptr) {
+        delete dungeon_act;
+    }
+}
+
 void Game::new_game(std::string filename)
 {
     p = Player("player", 10, 10);

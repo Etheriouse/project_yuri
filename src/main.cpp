@@ -38,11 +38,14 @@
 // content
 // Dungeon a faire 3 pour ouvrir le final, petite énigme pour ouvrir les 3 dungeon et le dungeon principal sur une carte a la undertal deltarune, pas forcément de monde ouvert ( ca ma gaver )
 
-
 // Game object is a save active
 // Main objet with menu save gestionary etc needed
 
 #define UNUSED(x) (void)(x)
+
+#include "Mob.hpp"
+#include "Serializer.hpp"
+#include "Map.hpp"
 
 int main(int argc, char const *argv[])
 {
@@ -52,7 +55,8 @@ int main(int argc, char const *argv[])
 
     return Application::newInstance().run();
     // create the map and save the map in file test_map01.map
-
+    
+    // Application::newInstance();
     // Mob frog("Frog", 25, 2);
     // Mob frog2("Frog", 25, 2);
     // frog.x = 2;
@@ -62,27 +66,86 @@ int main(int argc, char const *argv[])
     // Mob bones("Bones", 45, 10);
     // bones.x = 5;
     // bones.y = 6;
-    // Map m(8, 8, {&frog, &frog2, &bones});
+    // Map m(20, 20, {&frog, &frog2, &bones});
 
-    // for (int i = 0; i < 8; i++)
+    // for (int i = 0; i < 20; i++)
     // {
-    //     for (int j = 0; j < 8; j++)
+    //     for (int j = 0; j < 20; j++)
     //     {
-    //         if (j < 2)
-    //             *m(i, j) = {0, Tile::Grass};
-    //         else if (j > 5)
-    //             *m(i, j) = {0, Tile::Stone};
-    //         else if (j > 1 && j < 6 && (i == 1 || i == 6))
-    //             *m(i, j) = {0, Tile::WoodBridge};
-    //         else
+    //         // Vide par défaut
+    //         *m(i, j) = {0, Tile::Void};
+
+    //         // Ciel / espace jouable
+    //         if (j < 4)
+    //         {
     //             *m(i, j) = {0, Tile::Air};
+    //         }
+
+    //         // Sol principal
+    //         if (j >= 10 && j <= 13)
+    //         {
+    //             *m(i, j) = {0, Tile::Stone};
+    //         }
+
+    //         // Herbe sur le dessus
+    //         if (j == 10)
+    //         {
+    //             *m(i, j) = {0, Tile::Grass};
+    //         }
+
+    //         // Quelques trous dans le sol
+    //         if ((i == 3 || i == 4) && j == 10)
+    //             *m(i, j) = {0, Tile::Air};
+
+    //         if ((i == 15 || i == 16) && j == 10)
+    //             *m(i, j) = {0, Tile::Air};
+
+    //         // Plateforme en bois à gauche
+    //         if (j == 8 && i >= 1 && i <= 5)
+    //         {
+    //             *m(i, j) = {0, Tile::WoodBridge};
+    //         }
+
+    //         // Plateforme en bois à droite
+    //         if (j == 7 && i >= 14 && i <= 18)
+    //         {
+    //             *m(i, j) = {0, Tile::WoodBridge};
+    //         }
+
+    //         // Petit pont central
+    //         if (j == 6 && i >= 7 && i <= 12)
+    //         {
+    //             *m(i, j) = {0, Tile::WoodBridge};
+    //         }
+
+    //         // Piliers de pierre
+    //         if ((i == 6 || i == 13) && j >= 7 && j <= 10)
+    //         {
+    //             *m(i, j) = {0, Tile::Stone};
+    //         }
+
+    //         // Cavité sous le sol
+    //         if (j >= 14 && j <= 17 && i >= 5 && i <= 14)
+    //         {
+    //             *m(i, j) = {0, Tile::Air};
+    //         }
+
+    //         // Roches autour de la cavité
+    //         if (j >= 14 && j <= 18 && (i == 4 || i == 15))
+    //         {
+    //             *m(i, j) = {0, Tile::Stone};
+    //         }
+
+    //         // Quelques blocs d'herbe dans la zone supérieure
+    //         if (j == 9 && (i == 2 || i == 17))
+    //         {
+    //             *m(i, j) = {0, Tile::Grass};
+    //         }
     //     }
     // }
 
     // m.debug_print();
-    // Serializer s("test_map001.map", SERIALIZER_LOAD_MODE);
-    // Map m("test_map001.map");
-    // m.debug_print();
+    // Serializer s("test_map001.map", SERIALIZER_SAVE_MODE);
     // m.save(s);
 
     return 0;

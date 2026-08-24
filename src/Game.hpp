@@ -10,6 +10,7 @@ class Game {
 
     public:
         Game();
+        ~Game();
     
         inline uint64_t _getUID()  {
             return this->uid_counter++;
