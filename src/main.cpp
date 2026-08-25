@@ -41,6 +41,24 @@
 // Game object is a save active
 // Main objet with menu save gestionary etc needed
 
+//Limitation de genre 400ms entre chaque tour, possibilité avec effet ou buff de réduire ce temps, utile pour le speedrun
+//Le joueur peut pas jouer si toute les entité on pas jouer et inversement
+//Endurance pour courir et taper, courir avance plus de case en 1 tour, endurance regrn a x point par tour
+//Action peuvent prendre plus dun tour 
+
+//Objectif aprzd la fin théorique du jeu, lui faire croire qu'il a fait buger le jeu
+//1er zone cest juste to8 qui te balade en noclip
+//Jusqu'à croiser des fake porte
+//Puis une vrai porte vers le cimetière des zone abandonner
+
+//Cacher dans des pièces de lore et énigme des indice sur comment accéder a la vrai fin et a la parti noclip
+//Dabs le mode itinéraire dorée
+
+//Tu dois pas faire croire que le joueur a glitcher le jeu tu dois lui faire douter
+//Chaque fois que tu reload meme apres save tu revient a la fin theorique
+
+//Dans le cimetière tu croise des ancienne tentative de DA des asset pixel art etc
+
 #define UNUSED(x) (void)(x)
 
 #include "Mob.hpp"
