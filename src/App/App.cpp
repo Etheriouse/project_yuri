@@ -78,6 +78,10 @@ int App::run()
 
 void App::render(long double delta, uint64_t tick)
 {
+
+    unused(delta);
+    unused(tick);
+
     BeginDrawing();
     ClearBackground(WHITE);
 
@@ -86,6 +90,8 @@ void App::render(long double delta, uint64_t tick)
 
 void App::process(long double delta, uint64_t tick)
 {
+    unused(delta);
+    unused(tick);
 }
 
 /**

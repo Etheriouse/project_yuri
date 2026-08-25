@@ -1,11 +1,18 @@
-#ifndef GAME_APP_HPP
-#define GAME_APP_HPP
+#ifndef APP_APP_HPP
+#define APP_APP_HPP
 
 #include <cstdint>
+
+#include "Game.hpp"
+#include "Menu.hpp"
+#include "IOGestionnary.hpp"
+#include "TexturesGestionnary.hpp"
 
 #define OneBillion 1'000'000'000.0L
 #define TICK_RATE 120.0L
 #define TICK_TIME 1.0L/TICK_RATE
+
+#define unused(x) (void)(x)
 
 typedef struct
 {
@@ -57,19 +64,19 @@ private:
     /**
      * Pointer to a Game object, if nullptr, there is no Game in cours
      */
-    int *game;
+    Game *game;
     /**
      * Object for using menu
      */
-    int menu;
+    Menu menu;
     /**
      * Input Ouput gestionnary, like keyboard mouse etc
      */
-    int IOgestionnary;
+    IOGestionnary IOgestionnary;
     /**
      * Texture loader unloader etc
      */
-    int TexturesGestionnary;
+    TextureGestionnary TexturesGestionnary;
 };
 
 #endif
