@@ -11,10 +11,12 @@ App::App(uint32_t width, uint32_t height, const char *name) : width(width), heig
 {
     setApp(this);
     InitWindow(width, height, name);
+    menu = Menu(&running, &game);
 }
 
 App::~App()
 {
+    if(game != nullptr) delete game;
 }
 
 /**
@@ -23,9 +25,6 @@ App::~App()
 
 int App::run()
 {
-
-    bool running = true;
-
     long double delta = 0, acc_s = 0, acc_ds = 0, acc_p = 0;
     uint64_t tick = 0, tick_s = 0, fps = 0, tmp = 0, last = GameTime::getNanoS();
 
@@ -58,16 +57,17 @@ int App::run()
         acc_s += delta;
         if (acc_s >= 1.0L)
         {
-            //std::cout << "process tick: " << tick_s << std::endl;
+            // std::cout << "process tick: " << tick_s << std::endl;
             tick_s = 0;
             acc_s -= 1.0L;
         }
 
         acc_ds += delta;
-        if(acc_ds >= 0.5L) {
-            //std::cout << "fps: " << fps*2 << std::endl;
+        if (acc_ds >= 0.5L)
+        {
+            // std::cout << "fps: " << fps*2 << std::endl;
             fps = 0;
-            acc_ds-=0.5L;
+            acc_ds -= 0.5L;
         }
     }
 
@@ -85,6 +85,15 @@ void App::render(long double delta, uint64_t tick)
     BeginDrawing();
     ClearBackground(WHITE);
 
+    if (game == nullptr)
+    {
+        menu.render(delta, tick);
+    }
+    else
+    {
+        game->render(delta, tick);
+    }
+
     EndDrawing();
 }
 
@@ -92,6 +101,11 @@ void App::process(long double delta, uint64_t tick)
 {
     unused(delta);
     unused(tick);
+
+    if (game != nullptr)
+    {
+        game->process(delta, tick);
+    }
 }
 
 /**

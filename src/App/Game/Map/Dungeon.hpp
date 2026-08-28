@@ -1,16 +1,18 @@
-#ifndef GAME_GAME_HPP
-#define GAME_GAME_HPP
+#ifndef GAME_DUNGEON_HPP
+#define GAME_DUNGEON_HPP
 
-#include "Map.hpp"
-#include "Dungeon.hpp"
+#include <cstdint>
+#include <vector>
+
 #include "Player.hpp"
+#include "Floor.hpp"
 
-class Game
+class Dungeon
 {
-
 public:
-    Game();
-    ~Game();
+    Dungeon();
+    Dungeon(Player *p);
+    ~Dungeon();
 
     /**
      * render the game or the actual things used at the screen
@@ -26,16 +28,12 @@ public:
      */
     void process(long double delta, uint64_t tick);
 
-    void save(void *jsp) {}
-    void load(void *jsp) {}
-
 private:
-    Map *place = nullptr;
-    Dungeon *dungeon = nullptr;
+    std::vector<Floor> floors;
 
-    // Value saved in savefile
-    Player player;
-    bool placeOrDungeon;
+    /** Reference to the player of Game */
+    Player *player;
+
 };
 
 #endif

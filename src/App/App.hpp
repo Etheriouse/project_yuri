@@ -61,10 +61,16 @@ public:
     uint32_t height;
 
 private:
+
+    /**
+     * Value who manage the life of the app
+     */
+    bool running = true;
+
     /**
      * Pointer to a Game object, if nullptr, there is no Game in cours
      */
-    Game *game;
+    Game *game = nullptr;
     /**
      * Object for using menu
      */
