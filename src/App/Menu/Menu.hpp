@@ -7,6 +7,8 @@
 
 #define unused(x) (void)(x)
 
+/* Menu load a game and create with new */
+/* Menu unload a game and set to nullptr */
 
 class Menu
 {

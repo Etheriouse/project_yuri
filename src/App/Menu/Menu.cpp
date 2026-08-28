@@ -16,5 +16,5 @@ void Menu::render(long double delta, uint64_t tick) {
     unused(delta);
     unused(tick);
 
-    printf("its meee");
+    // printf("its meee");
 }

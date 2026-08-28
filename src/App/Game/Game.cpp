@@ -2,6 +2,7 @@
 
 Game::Game()
 {
+    place = new Map("data/map/dev/test.map");
 }
 
 Game::~Game()

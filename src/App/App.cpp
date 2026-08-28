@@ -12,6 +12,8 @@ App::App(uint32_t width, uint32_t height, const char *name) : width(width), heig
     setApp(this);
     InitWindow(width, height, name);
     menu = Menu(&running, &game);
+
+    game = new Game();
 }
 
 App::~App()
@@ -37,6 +39,7 @@ int App::run()
         last = tmp;
 
         // delta caper a 250ms
+        // evite de faire 150000 calcule dans une loop
         if (delta > 0.25L)
             delta = 0.25L;
 
