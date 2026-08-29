@@ -2,7 +2,8 @@
 
 Game::Game()
 {
-    place = new Map("data/map/dev/test.map");
+    player = Player();
+    place = new Map("data/map/dev/test.map", &player);
 }
 
 Game::~Game()
