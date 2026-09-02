@@ -1,28 +1,27 @@
 #ifndef GAME_PNJ_HPP
 #define GAME_PNJ_HPP
 
-#include <fstream>
 #include <string>
 
-class Pnj {
+#include "Serializer.hpp"
 
-    public:
-        void save(std::ofstream& file) {
-            size_t textureSize = texture.size();
-            size_t nameSize = name.size();
-            file.write(reinterpret_cast<const char*>(textureSize), sizeof(textureSize));
-            file.write(texture.data(), textureSize);
-            file.write(reinterpret_cast<const char*>(nameSize), sizeof(nameSize));
-            file.write(name.data(), nameSize);
-            file.write(reinterpret_cast<const char*>(x), sizeof(x));
-            file.write(reinterpret_cast<const char*>(y), sizeof(y));
-            file.write(reinterpret_cast<const char*>(uidDialogue), sizeof(uidDialogue));
-        }
+class Pnj
+{
 
-    private:
-        uint64_t uidDialogue;
-        std::string texture, name;
-        uint16_t x, y;
+public:
+    void write(Serializer::Writer &w) const
+    {
+        w.write(uidDialogue);
+        w.write(texture);
+        w.write(name);
+        w.write(x);
+        w.write(y);
+    }
+
+private:
+    uint64_t uidDialogue;
+    std::string texture, name;
+    uint16_t x, y;
 };
 
 #endif

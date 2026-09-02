@@ -6,6 +6,7 @@
 #include <string>
 #include <fstream>
 
+#include "Serializer.hpp"
 #include "Pnj.hpp"
 
 class Player;
@@ -25,10 +26,10 @@ typedef struct
     uint8_t flags;
     TileMap tile;
 
-    void save(std::ofstream &file)
+    void write(Serializer::Writer &w) const
     {
-        file.write(reinterpret_cast<const char *>(&flags), sizeof(flags));
-        file.write(reinterpret_cast<const char *>(&tile), sizeof(tile));
+        w.write(flags);
+        w.write(tile);
     }
 } CellMap;
 
@@ -38,12 +39,12 @@ typedef struct
     uint8_t flags;
     InteractTileMap tile;
 
-    void save(std::ofstream &file)
+    void write(Serializer::Writer &w) const
     {
-        file.write(reinterpret_cast<const char *>(&x), sizeof(x));
-        file.write(reinterpret_cast<const char *>(&y), sizeof(y));
-        file.write(reinterpret_cast<const char *>(&flags), sizeof(flags));
-        file.write(reinterpret_cast<const char *>(&tile), sizeof(tile));
+        w.write(x);
+        w.write(y);
+        w.write(flags);
+        w.write(tile);
     }
 } InteractCellMap;
 
@@ -51,7 +52,8 @@ class Map
 {
 
 public:
-    Map();
+    Map() : width(0), height(0) {};
+    Map(uint16_t w, uint16_t h);
 
     Map(std::string filename, Player *p);
     ~Map();
@@ -70,10 +72,35 @@ public:
      */
     void process(long double delta, uint64_t tick);
 
+    // Create map from file function
+
+    /**
+     * Modify cell's map
+     */
+    void modCell(CellMap cm, size_t index);
+
+    /**
+     * Modify interactCell's map
+     */
+    void modInteractCell(InteractCellMap im, size_t index);
+
+    /**
+     * Modify pnj's map
+     */
+    void modPnj(Pnj p, size_t index);
+
+    /**
+     * Print in the console a representation of the map
+     */
     void debugPrint();
 
-    void write(std::string filename);
+    /**
+     * Serializer function for map
+     * @param w a writer serializer
+     */
+    void write(Serializer::Writer &w) const;
 
+private:
     // classic cell
     std::vector<CellMap> cells;
     // interactible cell
@@ -82,12 +109,9 @@ public:
     std::vector<Pnj> pnjs;
 
     uint16_t width, height;
-private:
 
     /** Reference to the player of Game */
     Player *player;
 };
-
-void mapSerialize(Map m);
 
 #endif

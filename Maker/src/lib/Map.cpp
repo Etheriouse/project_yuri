@@ -1,8 +1,9 @@
 #include "Map.hpp"
+#include <iostream>
 
 using namespace std;
 
-Map::Map()
+Map::Map(uint16_t w, uint16_t h) : width(w), height(h)
 {
 }
 
@@ -22,53 +23,54 @@ void Map::process(long double delta, uint64_t tick)
 {
 }
 
-
-// do a map serializer for global? 
-
-// define save file for this to know if this is usefull
-
 void Map::debugPrint()
 {
-}
-
-void write_(CellMap element, ofstream &file)
-{
-    element.save(file);
-}
-
-void write_(InteractCellMap element, ofstream &file)
-{
-    element.save(file);
-}
-
-void write_(Pnj p, ofstream &file)
-{
-    p.save(file);
-}
-
-template <typename T>
-void writeV(std::vector<T> v, ofstream &file)
-{
-    size_t cellCount = v.size();
-    file.write(
-        reinterpret_cast<const char *>(&cellCount),
-        sizeof(cellCount));
-    for (auto element : v)
+    for (uint16_t y = 0; y < height; y++)
     {
-        write_(element, file);
+        for (uint16_t x = 0; x < width; x++)
+        {
+            cout << "(" << cells[(y*width)+x].tile << ", " << static_cast<int>(cells[(y*width)+x].flags) << ")";
+        }
+        cout << endl;
     }
+    cout << endl;
 }
 
-void Map::write(std::string filename)
+void Map::write(Serializer::Writer &w) const
 {
-    ofstream file("save.bin", ios::binary);
-    writeV(cells, file);
-    writeV(interactCells, file);
-    writeV(pnjs, file);
-    file.write(reinterpret_cast<const char*>(width), sizeof(width));
-    file.write(reinterpret_cast<const char*>(height), sizeof(height));
+    w.write(cells);
+    w.write(interactCells);
+    w.write(pnjs);
+    w.write(width);
+    w.write(height);
 }
 
-void mapSerialize(Map m)
+/**
+ * Modify cell's map
+ */
+void Map::modCell(CellMap cm, size_t index)
 {
+    if (cells.size() <= index)
+        cells.resize((cells.size() + 1) * 2);
+    this->cells[index] = cm;
+}
+
+/**
+ * Modify interactCell's map
+ */
+void Map::modInteractCell(InteractCellMap im, size_t index)
+{
+    if (interactCells.size() <= index)
+        interactCells.resize((interactCells.size() + 1) * 2);
+    this->interactCells[index] = im;
+}
+
+/**
+ * Modify pnj's map
+ */
+void Map::modPnj(Pnj p, size_t index)
+{
+    if (pnjs.size() <= index)
+        pnjs.resize((pnjs.size() + 1) * 2);
+    this->pnjs[index] = p;
 }

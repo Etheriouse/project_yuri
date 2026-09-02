@@ -3,6 +3,6 @@
 
 #include "Dungeon.hpp"
 
-void makeDungeon(const char* filename);
+void makeDungeon(const char* filename, const char *settings);
 
 #endif

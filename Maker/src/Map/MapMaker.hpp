@@ -3,6 +3,6 @@
 
 #include "Map.hpp"
 
-void makeMap(const char* filename);
+void makeMap(const char *filename, const char *settings);
 
 #endif
