@@ -7,6 +7,7 @@
 #include "Menu.hpp"
 #include "IOGestionnary.hpp"
 #include "TexturesGestionnary.hpp"
+#include "Serializer.hpp"
 
 #define OneBillion 1'000'000'000.0L
 #define TICK_RATE 120.0L
@@ -28,6 +29,19 @@ public:
     ~App();
 
     /* Main function */
+
+    /**
+     * Create a app in reading settings of app in file app.settings
+     */
+    static inline App create() {
+        Serializer::Reader file("app.settings");
+        uint32_t width, height;
+        std::string name;
+        file.read(width);
+        file.read(height);
+        file.read(name);
+        return App(width, height, name.c_str());
+    }
 
     /**
      * Run the main loop of the application, load and unload all

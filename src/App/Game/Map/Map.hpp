@@ -4,29 +4,58 @@
 #include <vector>
 #include <cstdint>
 #include <string>
+#include <fstream>
 
-#include "Player.hpp"
+#include "Serializer.hpp"
+#include "Pnj.hpp"
+
+class Player;
 
 enum TileMap
 {
+    Grass
+};
 
+enum InteractTileMap
+{
+    Button
 };
 
 typedef struct
 {
     uint8_t flags;
     TileMap tile;
+
+    void write(Serializer::Writer &w) const
+    {
+        w.write(flags);
+        w.write(tile);
+    }
 } CellMap;
+
+typedef struct
+{
+    uint16_t x, y;
+    uint8_t flags;
+    InteractTileMap tile;
+
+    void write(Serializer::Writer &w) const
+    {
+        w.write(x);
+        w.write(y);
+        w.write(flags);
+        w.write(tile);
+    }
+} InteractCellMap;
 
 class Map
 {
 
 public:
     Map();
-    
+
     Map(std::string filename, Player *p);
     ~Map();
-
 
     /**
      * render the game or the actual things used at the screen
@@ -42,15 +71,22 @@ public:
      */
     void process(long double delta, uint64_t tick);
 
-private:
-    std::vector<CellMap> cells;
+    void debugPrint();
 
+    void write(Serializer::Writer &w) const;
+
+private:
+    // classic cell
+    std::vector<CellMap> cells;
+    // interactible cell
+    std::vector<InteractCellMap> interactCells;
+    // pnj
+    std::vector<Pnj> pnjs;
+
+    uint16_t width, height;
+    
     /** Reference to the player of Game */
     Player *player;
-
-
 };
-
-void mapSerialize(Map m);
 
 #endif

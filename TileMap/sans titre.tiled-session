@@ -1,0 +1,51 @@
+{
+    "activeFile": "",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "test.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 0.125
+        },
+        "test01.tmx": {
+            "scale": 9.415555555555555,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 44.978758555581784,
+                "y": 45.031862166627334
+            }
+        },
+        "tiles.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 11,
+            "scaleInEditor": 32
+        }
+    },
+    "last.exportedFilePath": "C:/Code/Cpp/randomRoguelite/TileMap",
+    "last.imagePath": "C:/Code/Cpp/randomRoguelite/TileMap",
+    "map.height": 15,
+    "map.lastUsedExportFilter": "Fichiers CSV (*.csv)",
+    "map.lastUsedFormat": "tmx",
+    "map.orientation": "2",
+    "map.tileHeight": 6,
+    "map.tileWidth": 6,
+    "map.width": 15,
+    "openFiles": [
+        "tiles.tsx",
+        "test01.tmx"
+    ],
+    "project": "sans titre.tiled-project",
+    "recentFiles": [
+        "tiles.tsx",
+        "test01.tmx",
+        "test.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 6,
+        "width": 6
+    },
+    "tileset.type": 0
+}
