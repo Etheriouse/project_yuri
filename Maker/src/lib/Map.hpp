@@ -13,7 +13,11 @@ class Player;
 
 enum TileMap
 {
-    Grass
+    Default,
+    Grass,
+    Stone,
+    Lava,
+    Water
 };
 
 enum InteractTileMap
@@ -93,6 +97,11 @@ public:
      * Print in the console a representation of the map
      */
     void debugPrint();
+
+    /**
+     * Print in the console a illustration of the map
+     */
+    void iDebugPrint();
 
     /**
      * Serializer function for map

@@ -23,9 +23,9 @@ typedef struct
 class App
 {
 
-public:
     App();
     App(uint32_t width, uint32_t height, const char *name);
+public:
     ~App();
 
     /* Main function */

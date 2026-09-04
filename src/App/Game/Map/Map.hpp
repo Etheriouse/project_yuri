@@ -13,7 +13,11 @@ class Player;
 
 enum TileMap
 {
-    Grass
+    Default,
+    Grass,
+    Stone,
+    Lava,
+    Water
 };
 
 enum InteractTileMap
@@ -52,7 +56,8 @@ class Map
 {
 
 public:
-    Map();
+    Map() : width(0), height(0) {};
+    Map(uint16_t w, uint16_t h);
 
     Map(std::string filename, Player *p);
     ~Map();
@@ -71,8 +76,37 @@ public:
      */
     void process(long double delta, uint64_t tick);
 
+    // Create map from file function
+
+    /**
+     * Modify cell's map
+     */
+    void modCell(CellMap cm, size_t index);
+
+    /**
+     * Modify interactCell's map
+     */
+    void modInteractCell(InteractCellMap im, size_t index);
+
+    /**
+     * Modify pnj's map
+     */
+    void modPnj(Pnj p, size_t index);
+
+    /**
+     * Print in the console a representation of the map
+     */
     void debugPrint();
 
+    /**
+     * Print in the console a illustration of the map
+     */
+    void iDebugPrint();
+
+    /**
+     * Serializer function for map
+     * @param w a writer serializer
+     */
     void write(Serializer::Writer &w) const;
 
 private:
@@ -84,7 +118,7 @@ private:
     std::vector<Pnj> pnjs;
 
     uint16_t width, height;
-    
+
     /** Reference to the player of Game */
     Player *player;
 };

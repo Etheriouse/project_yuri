@@ -2,6 +2,9 @@
 namespace fs = std::filesystem;
 
 #include "TexturesGestionnary.hpp"
+#include "Map.hpp"
+
+// todo a revoir le bordel pck c trop galere la
 
 TextureGestionnary::TextureGestionnary()
 {
@@ -33,13 +36,17 @@ void TextureGestionnary::load(TextureLocate who)
 void TextureGestionnary::unload(TextureLocate who)
 {
     std::string folder = findFolder(who);
-    
+
     auto it = loaded.begin();
-    while(it != loaded.end()) {
-        if(it->first.rfind(folder, 0) != std::string::npos) {
+    while (it != loaded.end())
+    {
+        if (it->first.rfind(folder, 0) != std::string::npos)
+        {
             UnloadTexture(it->second);
             it = loaded.erase(it);
-        } else {
+        }
+        else
+        {
             it++;
         }
     }
@@ -52,4 +59,21 @@ void TextureGestionnary::unloadAll()
         UnloadTexture(tx);
     }
     loaded.clear();
+}
+
+Texture2D TextureGestionnary::get(TileMap t)
+{
+    auto it = texture2d_from_tilemap.find(t);
+    if (it == texture2d_from_tilemap.end())
+    {
+        auto it2 = loaded.find(texture2d_from_tilemap.at(TileMap::Default));
+        if (it2 == loaded.end())
+            return loaded.begin()->second;
+    }
+    else
+    {
+        auto it2 = loaded.find(it->second);
+        if (it2 == loaded.end())
+            return loaded.begin()->second;
+    }
 }

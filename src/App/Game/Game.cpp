@@ -1,9 +1,10 @@
 #include "Game.hpp"
+#include "App.hpp"
 
 Game::Game()
 {
     player = Player();
-    place = new Map("data/map/dev/test.map", &player);
+    place = new Map("data/map/dev/base.map", &player);
 }
 
 Game::~Game()

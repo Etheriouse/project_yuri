@@ -33,9 +33,17 @@ public:
      */
     void unloadAll();
 
+    /**
+     * Get a Texture2D from a tile
+     */
+    Texture2D get(TileMap t);
+
 private:
     const std::map<TextureLocate, std::string> translate_locate_to_path = {
         {TextureLocate::Default, "default_"}};
+
+    const std::map<TileMap, std::string> texture2d_from_tilemap = {
+        {TileMap::Default, "default_/default.png"}};
 
     std::string findFolder(TextureLocate tl);
 
