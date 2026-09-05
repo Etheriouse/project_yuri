@@ -11,9 +11,12 @@ App::App(uint32_t width, uint32_t height, const char *name) : width(width), heig
 {
     setApp(this);
     InitWindow(width, height, name);
-    menu = Menu(&running, &game);
+    TexturesGestionnary.run();
 
+    menu = Menu(&running, &game);
     game = new Game();
+
+    // this->TexturesGestionnary = TextureGestionnary::create();
 }
 
 App::~App()
@@ -73,6 +76,8 @@ int App::run()
             acc_ds -= 0.5L;
         }
     }
+
+    TexturesGestionnary.exit();
 
     CloseWindow();
 

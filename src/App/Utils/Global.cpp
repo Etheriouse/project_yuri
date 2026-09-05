@@ -3,6 +3,8 @@
 
 App *g_app;
 
-void setApp(App *ptr) {
+void setApp(App *ptr)
+{
     g_app = ptr;
 }
+

@@ -1,79 +1,55 @@
 #include <filesystem>
+#include <iostream>
+using namespace std;
 namespace fs = std::filesystem;
 
 #include "TexturesGestionnary.hpp"
 #include "Map.hpp"
 
-// todo a revoir le bordel pck c trop galere la
-
 TextureGestionnary::TextureGestionnary()
 {
 }
 
-std::string TextureGestionnary::findFolder(TextureLocate tl)
+TextureGestionnary::~TextureGestionnary()
 {
-    auto it = translate_locate_to_path.find(tl);
-    if (it == translate_locate_to_path.end())
-        return translate_locate_to_path.at(TextureLocate::Default);
-    else
-        return it->second;
 }
 
-void TextureGestionnary::load(TextureLocate who)
+void TextureGestionnary::run()
 {
-    fs::path folder = findFolder(who);
-
-    for (const auto &entry : fs::directory_iterator(folder))
-    {
-        if (entry.is_regular_file())
-        {
-            std::string filename = entry.path();
-            loaded[filename] = LoadTexture(filename.c_str());
-        }
-    }
+    _default = LoadTexture(defaultTexturePath);
 }
 
-void TextureGestionnary::unload(TextureLocate who)
+void TextureGestionnary::exit()
 {
-    std::string folder = findFolder(who);
-
-    auto it = loaded.begin();
-    while (it != loaded.end())
+    UnloadTexture(_default);
+    for (auto [tile, tex] : loaded)
     {
-        if (it->first.rfind(folder, 0) != std::string::npos)
-        {
-            UnloadTexture(it->second);
-            it = loaded.erase(it);
-        }
-        else
-        {
-            it++;
-        }
+        UnloadTexture(tex);
     }
-}
-
-void TextureGestionnary::unloadAll()
-{
-    for (auto [name, tx] : loaded)
-    {
-        UnloadTexture(tx);
-    }
-    loaded.clear();
 }
 
 Texture2D TextureGestionnary::get(TileMap t)
 {
-    auto it = texture2d_from_tilemap.find(t);
-    if (it == texture2d_from_tilemap.end())
-    {
-        auto it2 = loaded.find(texture2d_from_tilemap.at(TileMap::Default));
-        if (it2 == loaded.end())
-            return loaded.begin()->second;
-    }
-    else
-    {
-        auto it2 = loaded.find(it->second);
-        if (it2 == loaded.end())
-            return loaded.begin()->second;
-    }
+    auto isLoaded = loaded.find(t);
+    if (isLoaded != loaded.end())
+        return isLoaded->second;
+
+    auto isExist = translate.find(t);
+    if (isExist == translate.end())
+        return _default;
+
+    cout << "TextureGestionnary: new texture loaded" << endl;
+
+    Texture2D tex = LoadTexture(isExist->second.c_str());
+    loaded.emplace(t, tex);
+    return tex;
+}
+
+void TextureGestionnary::unload(TileMap tm)
+{
+    auto isLoaded = loaded.find(tm);
+    if (isLoaded == loaded.end())
+        return;
+    UnloadTexture(isLoaded->second);
+    loaded.erase(isLoaded);
 }

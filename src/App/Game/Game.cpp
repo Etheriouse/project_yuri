@@ -1,10 +1,11 @@
 #include "Game.hpp"
-#include "App.hpp"
+#include <iostream>
 
 Game::Game()
 {
     player = Player();
     place = new Map("data/map/dev/base.map", &player);
+    placeOrDungeon = true;
 }
 
 Game::~Game()

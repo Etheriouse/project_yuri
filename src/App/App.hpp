@@ -15,11 +15,6 @@
 
 #define unused(x) (void)(x)
 
-typedef struct
-{
-    uint32_t width, height;
-} AppSize;
-
 class App
 {
 
@@ -69,10 +64,22 @@ public:
      */
     bool appIsClosing();
 
+    /**
+     * Size of app
+     */
+    inline Size size() {
+        return {width, height};
+    }
+
     /** Width of the app */
-    uint32_t width;
+    uint16_t width;
     /** Height of the app */
-    uint32_t height;
+    uint16_t height;
+
+    /**
+     * Texture loader unloader etc
+     */
+    TextureGestionnary TexturesGestionnary;
 
 private:
 
@@ -93,10 +100,6 @@ private:
      * Input Ouput gestionnary, like keyboard mouse etc
      */
     IOGestionnary IOgestionnary;
-    /**
-     * Texture loader unloader etc
-     */
-    TextureGestionnary TexturesGestionnary;
 };
 
 #endif

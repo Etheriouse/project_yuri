@@ -22,9 +22,9 @@ namespace Serializer
     {
 
     public:
-        Writer(std::string filename)
+        Writer(std::string filename, std::ios_base::openmode mode = std::ios::binary)
         {
-            file = std::ofstream(filename, std::ios::binary);
+            file = std::ofstream(filename, mode);
         }
 
         template <WriteSerializable T>
@@ -68,9 +68,9 @@ namespace Serializer
     {
 
     public:
-        Reader(std::string filename)
+        Reader(std::string filename, std::ios_base::openmode mode = std::ios::binary)
         {
-            file = std::ifstream(filename, std::ios::binary);
+            file = std::ifstream(filename, mode);
         }
 
         template <ReadSerializable T>

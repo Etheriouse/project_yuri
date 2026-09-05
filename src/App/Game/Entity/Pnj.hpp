@@ -18,6 +18,15 @@ public:
         w.write(y);
     }
 
+    void read(Serializer::Reader &r)
+    {
+        r.read(uidDialogue);
+        r.read(texture);
+        r.read(name);
+        r.read(x);
+        r.read(y);
+    }
+
 private:
     uint64_t uidDialogue;
     std::string texture, name;

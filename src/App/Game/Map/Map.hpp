@@ -8,6 +8,7 @@
 
 #include "Serializer.hpp"
 #include "Pnj.hpp"
+#include "Global.hpp"
 
 class Player;
 
@@ -35,6 +36,12 @@ typedef struct
         w.write(flags);
         w.write(tile);
     }
+
+    void read(Serializer::Reader &r)
+    {
+        r.read(flags);
+        r.read(tile);
+    }
 } CellMap;
 
 typedef struct
@@ -49,6 +56,14 @@ typedef struct
         w.write(y);
         w.write(flags);
         w.write(tile);
+    }
+
+    void read(Serializer::Reader &r)
+    {
+        r.read(x);
+        r.read(y);
+        r.read(flags);
+        r.read(tile);
     }
 } InteractCellMap;
 
@@ -121,6 +136,9 @@ private:
 
     /** Reference to the player of Game */
     Player *player;
+
+    Size tileSize = {16, 16};
+    Size start = {0, 0};
 };
 
 #endif

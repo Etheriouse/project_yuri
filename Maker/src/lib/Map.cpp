@@ -1,5 +1,4 @@
 #include "Map.hpp"
-#include "Global.hpp"
 #include <iostream>
 
 using namespace std;
@@ -18,15 +17,6 @@ Map::~Map()
 
 void Map::render(long double delta, uint64_t tick)
 {
-     for (uint16_t y = 0; y < height; y++)
-    {
-        for (uint16_t x = 0; x < width; x++)
-        {
-            g_app->
-    
-            cout << "(" << cells[(y * width) + x].tile << ", " << static_cast<int>(cells[(y * width) + x].flags) << ")";
-        }
-    }
 }
 
 void Map::process(long double delta, uint64_t tick)
